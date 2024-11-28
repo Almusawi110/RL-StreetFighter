@@ -3,6 +3,7 @@ ale-py==0.8.1
 alembic==1.14.0
 asttokens==2.4.1
 astunparse==1.6.3
+atari-py==0.2.9
 AutoROM==0.6.1
 AutoROM.accept-rom-license==0.6.1
 backcall==0.2.0
@@ -108,7 +109,7 @@ torchvision==0.11.3+cu113
 tornado==6.4.1
 tqdm==4.67.0
 traitlets==5.14.3
-typing-extensions==4.5.0
+typing-extensions==4.12.2
 tzdata==2024.2
 urllib3==2.2.3
 wcwidth==0.2.13
