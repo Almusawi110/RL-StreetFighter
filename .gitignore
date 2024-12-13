@@ -6,3 +6,6 @@ __pycache__
 *.rar
 fit-8batch-3
 train
+logs3
+models
+models3
