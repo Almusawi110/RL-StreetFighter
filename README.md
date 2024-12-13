@@ -34,35 +34,55 @@ This project demonstrates the use of reinforcement learning algorithms to train 
 
 ---
 
-## Training the Agent
 
-### PPO Training
-To train the agent using PPO:
-```bash
-python train_ppo.py
-```
+## Project Structure
 
-### A2C Training
-To train the agent using A2C:
-```bash
-python train_a2c.py
-```
-
----
-
-## File Structure
 ```
 .
-├── street_fighter_env.py    # Custom environment setup for Street Fighter
-├── train_ppo.py             # Training script for PPO
-├── train_a2c.py             # Training script for A2C
-├── Best_model/                  # Saved models
-├── logs/                    # Training logs and TensorBoard files
-├── requirements.txt         # Required Python libraries
-└── README.md                # Project documentation
+├── PPO_StreetFighter.ipynb           # Notebook for PPO training
+├── A2C_streetfighter.ipynb           # Notebook for A2C training
+├── Best_model                        # Folder containing the best-trained models
+│   ├── a2c_streetfighter_model.zip   # Best model for A2C
+│   ├── best_model_4200000.zip        # Best PPO model at 4.2 million steps
+│   ├── best_model_4210000.zip        # Best PPO model at 4.21 million steps
+│   ├── best_model_4220000.zip        # Best PPO model at 4.22 million steps
+│   ├── best_model_5000000.zip        # Best PPO model at 5 million steps
+├── logs                              # Folder containing tensorboard logs
+│   ├── tensorboard-A2C               # Logs for A2C training
+│   ├── tensorboard-PPO               # Logs for PPO training
 ```
 
 ---
+## How to Run
+
+### PPO Training
+To train the agent using PPO, open and run `PPO_StreetFighter.ipynb` in a Jupyter Notebook environment.
+
+### A2C Training
+To train the agent using A2C, open and run `A2C_streetfighter.ipynb` in a Jupyter Notebook environment.
+
+## Best Models
+
+- The best-trained models are stored in the `Best_model` folder.
+- Each model can be reloaded and evaluated using the corresponding notebook.
+- Example usage for loading a model:
+    ```python
+    from stable_baselines3 import PPO
+    model = PPO.load('./Best_model/best_model_5000000.zip')
+    ```
+
+## Logs
+
+- Tensorboard logs are stored in the `logs` folder.
+- To visualize the training process:
+    ```bash
+    tensorboard --logdir=logs
+    ```
+
+## Notes
+
+- **PPO** was found to outperform **A2C** in this environment due to its robustness and the clipping mechanism.
+- **A2C** results were moderate, and further tuning or experimentation may improve its performance.
 
 ## Hyperparameters
 The project uses fine-tuned hyperparameters based on extensive experimentation. Below are the key hyperparameters used:
@@ -95,7 +115,7 @@ The project uses fine-tuned hyperparameters based on extensive experimentation. 
 ---
 
 ## Future Work
-- Experiment with additional algorithms like DDPG or SAC.
+- Change reward to health bar instead of score.
 - Fine-tune A2C further to enhance its performance.
 - Optimize the training pipeline for GPU acceleration.
 - Explore curriculum learning to guide the agent through levels progressively.
