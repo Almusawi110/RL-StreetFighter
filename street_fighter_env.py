@@ -1,15 +1,8 @@
 import retro
 import numpy as np
-import cv2
+import tensorflow as tf
 from gym import Env
 from gym.spaces import Box, MultiBinary
-
-
-        # Create custom environment 
-        #- Observation Preprocess - grayscale , frame delta, resize the frame so we have less pixels
-        # Filter the action - parameter DONE
-        # Reward function - set this to the score
-
 
 class StreetFighter(Env): 
     def __init__(self):
@@ -26,26 +19,39 @@ class StreetFighter(Env):
         obs = self.preprocess(obs) 
         self.previous_frame = obs 
         
-        # Create a attribute to hold the score delta 
+        # Create an attribute to hold the score delta 
         self.score = 0 
         return obs
     
-    def preprocess(self, observation): 
-        # Grayscaling 
-        gray = cv2.cvtColor(observation, cv2.COLOR_BGR2GRAY)
-        # Resize 
-        resize = cv2.resize(gray, (84,84), interpolation=cv2.INTER_CUBIC)
-        # Add the channels value
-        channels = np.reshape(resize, (84,84,1))
-        return channels 
+    # def preprocess(self, observation): 
+    #     # Grayscaling and resizing using TensorFlow
+    #     gray = tf.image.rgb_to_grayscale(observation)
+    #     resize = tf.image.resize(gray, [84, 84])
+    #     return resize.numpy()
+    
+    def preprocess(self, observation):
+        """Preprocess the game observation."""
+        # Convert to TensorFlow tensor
+        observation_tensor = tf.convert_to_tensor(observation, dtype=tf.float32)
+        
+        # Grayscale the image
+        gray = tf.image.rgb_to_grayscale(observation_tensor)
+        
+        # Resize to 84x84
+        resized = tf.image.resize(gray, [84, 84], method=tf.image.ResizeMethod.BILINEAR)
+        
+        # Add channel dimension (if required by the model)
+        reshaped = tf.reshape(resized, [84, 84, 1])
+        
+        return reshaped.numpy()
     
     def step(self, action): 
         # Take a step 
         obs, reward, done, info = self.game.step(action)
         obs = self.preprocess(obs) 
         
-        # Frame delta 
-        frame_delta = obs - self.previous_frame
+        # Frame delta using TensorFlow
+        frame_delta = tf.subtract(obs, self.previous_frame).numpy()
         self.previous_frame = obs 
         
         # Reshape the reward function
